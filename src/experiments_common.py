@@ -14,7 +14,7 @@ import torch
 import src.config as cfg
 from src.evaluation import financial_loss_fn, loglog_fit
 from src.models import ModelSpec
-from src.networks import SharedControlNet
+from src.networks import create_shared_control_net
 from src.reference import quantile_hedging_value
 from src.simulation import simulate_financial
 from src.training import train_control
@@ -41,7 +41,7 @@ def train_single(
 ):
     """Train one network for a given model, control bound and p0 (used
     directly by exp_3/exp_6 and by exp_5's feedback comparison)."""
-    net = SharedControlNet(input_dim=3)
+    net = create_shared_control_net(input_dim=3, seed=seed)
     loss_fn = financial_loss_fn(
         p0, spec.x0, spec.mu, spec.vol_fn, spec.lambda_fn, spec.g_fn,
         N, cfg.BS_T, M, bound_mode, eta_stab, cfg.S_X,
@@ -143,7 +143,7 @@ def run_convergence_study(
         M = N ** (1.0 / 8.0)
         errors, defects = [], []
         for c in range(n_chains):
-            net = SharedControlNet(input_dim=3)
+            net = create_shared_control_net(input_dim=3, seed=seed + 1000 * c + N)
             if chain_states[c] is not None:
                 net.load_state_dict(chain_states[c])
             loss_fn = financial_loss_fn(

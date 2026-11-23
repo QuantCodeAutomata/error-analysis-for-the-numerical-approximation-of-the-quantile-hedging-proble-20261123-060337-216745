@@ -49,6 +49,20 @@ class SharedControlNet(nn.Module):
         return raw.squeeze(-1)
 
 
+def create_shared_control_net(input_dim: int, seed: int, hidden_width: int = HIDDEN_WIDTH) -> SharedControlNet:
+    """Instantiate :class:`SharedControlNet` with a seeded global generator.
+
+    ``nn.Linear``'s default (Kaiming-uniform) initialization of the hidden
+    layers draws from PyTorch's global random generator, which the ``seed``
+    argument of :func:`src.training.train_control` does not touch (it only
+    seeds the per-batch data generators). Seeding the global generator here
+    makes the two hidden layers reproducible from ``seed`` as well, so that a
+    run is fully determined by it.
+    """
+    torch.manual_seed(seed)
+    return SharedControlNet(input_dim=input_dim, hidden_width=hidden_width)
+
+
 def zero_control_state_dict(net: SharedControlNet) -> dict:
     """State dict reproducing the zero control (last layer zeroed)."""
     state = {k: v.clone() for k, v in net.state_dict().items()}

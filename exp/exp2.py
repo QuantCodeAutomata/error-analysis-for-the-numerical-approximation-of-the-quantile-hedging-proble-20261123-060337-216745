@@ -14,7 +14,7 @@ from pathlib import Path
 
 import src.config as cfg
 from src.evaluation import toy_loss_fn
-from src.networks import SharedControlNet
+from src.networks import create_shared_control_net
 from src.plotting import plot_projection_bias
 from src.training import train_control
 
@@ -26,7 +26,7 @@ def _train_one(p: float, N: int, M: float, bound_mode: str, eta_stab,
                 validation_frequency: int, seed: int) -> dict:
     if p in (0.0, 1.0):
         return {"estimate": p, "stderr": 0.0}
-    net = SharedControlNet(input_dim=2)
+    net = create_shared_control_net(input_dim=2, seed=seed)
     loss_fn = toy_loss_fn(p, N, cfg.EXP2_T, M, bound_mode, eta_stab)
     res = train_control(
         net, loss_fn, n_iterations=n_iterations, batch_size=batch_size,

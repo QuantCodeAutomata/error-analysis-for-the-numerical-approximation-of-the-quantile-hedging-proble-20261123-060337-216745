@@ -20,10 +20,10 @@ Setting: g≡1, b≡0, λ≡0, Z≡1, T=1, N=100, M=0.0307 (Proposition 4.1 boun
 | p | exact | estimate | abs. error | verdict |
 |---|---|---|---|---|
 | 0.0 | 0.000 | 0.0000 | 0.0e+00 | reproduced |
-| 0.2 | 0.200 | 0.1999839 | 1.6e-05 | reproduced |
-| 0.4 | 0.400 | 0.3999958 | 4.2e-06 | reproduced |
-| 0.6 | 0.600 | 0.6001273 | 1.3e-04 | reproduced |
-| 0.8 | 0.800 | 0.8000113 | 1.1e-05 | reproduced |
+| 0.2 | 0.200 | 0.1999943 | 5.7e-06 | reproduced |
+| 0.4 | 0.400 | 0.4000259 | 2.6e-05 | reproduced |
+| 0.6 | 0.600 | 0.6000509 | 5.1e-05 | reproduced |
+| 0.8 | 0.800 | 0.8000250 | 2.5e-05 | reproduced |
 | 1.0 | 1.000 | 1.0000 | 0.0e+00 | reproduced |
 
 **Verdict: reproduced.** Every test point matches the exact value v(p)=p to
@@ -40,19 +40,19 @@ N=30 (M=1.530):
 
 | p | exact | fixed | adaptive |
 |---|---|---|---|
-| 0.6 | 0.600 | 0.5491 | 0.5943 |
-| 0.8 | 0.800 | 0.7007 | 0.8003 |
+| 0.6 | 0.600 | 0.5484 | 0.5976 |
+| 0.8 | 0.800 | 0.6974 | 0.8004 |
 
 N=100 (M=1.778):
 
 | p | exact | fixed | adaptive |
 |---|---|---|---|
-| 0.6 | 0.600 | 0.5719 | 0.5993 |
-| 0.8 | 0.800 | 0.7490 | 0.7911 |
+| 0.6 | 0.600 | 0.5550 | 0.6032 |
+| 0.8 | 0.800 | 0.7556 | 0.8027 |
 
 **Verdict: reproduced.** The paper reports, at N=30, fixed≈0.53 and
 adaptive≈0.80 at p=0.8 (Figure 2a); at N=100, fixed≈0.75 and adaptive≈0.80 at
-p=0.8 (Figure 2b). The executed values (0.70/0.80 at N=30, 0.75/0.79 at
+p=0.8 (Figure 2b). The executed values (0.70/0.80 at N=30, 0.76/0.80 at
 N=100) reproduce the qualitative and near-quantitative pattern described in
 Section 4.2: the fixed-bound estimate is biased downward for p>1/2, most
 strongly on the coarser grid N=30, while the adaptive bound keeps the

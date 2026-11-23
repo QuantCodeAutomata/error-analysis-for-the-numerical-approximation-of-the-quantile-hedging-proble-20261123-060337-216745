@@ -14,7 +14,7 @@ from pathlib import Path
 
 import src.config as cfg
 from src.evaluation import toy_loss_fn
-from src.networks import SharedControlNet
+from src.networks import create_shared_control_net
 from src.plotting import plot_exact_vs_estimate
 from src.training import train_control
 
@@ -28,7 +28,7 @@ def run(batch_size: int, val_size: int, test_size: int, validation_frequency: in
         if p in (0.0, 1.0):
             rows.append({"p": p, "exact": p, "estimate": p, "stderr": 0.0, "abs_error": 0.0})
             continue
-        net = SharedControlNet(input_dim=2)
+        net = create_shared_control_net(input_dim=2, seed=seed + i)
         loss_fn = toy_loss_fn(p, cfg.EXP1_N, cfg.EXP1_T, cfg.EXP1_M, "fixed", None)
         res = train_control(
             net, loss_fn,
