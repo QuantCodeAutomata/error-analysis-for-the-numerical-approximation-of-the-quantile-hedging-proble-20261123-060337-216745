@@ -92,11 +92,21 @@ interior test point, matching Section 4.3. Raising the closed-form reference
 from a reduced sample of 2^15 standard normals to the paper's full 2^20 moved
 the p=0.8 reference from 0.687 to 0.734, confirming that the earlier gap to
 the paper's approximate reading of ≈0.8 was partly a Monte Carlo sampling
-effect in the reference itself, not in the neural scheme; the remaining
-8% gap and the fixed-bound overshoot are consistent with the paper's figure
-being read off a plot and are not further decomposed. Validation (2^12) and
-test (2^13) sample sizes for the neural network stay reduced relative to the
-paper's 2^15/2^17 (see deviations); `python -m exp.exp3 --full` runs the full
+effect in the reference itself, not in the neural scheme. A further check
+retrained the fixed-bound network at p=0.8 with the base seed changed from
+2024 to 2025 and 2026 (all other settings unchanged): the fixed-bound
+estimate ranged from 1.94 (seed 2025) to 2.71 (seed 2026), against 2.37 for
+the base seed 2024, while the reference stayed at 0.734-0.743 and the
+adaptive-bound estimate stayed within 0.93-0.99 across all three seeds. The
+paper's reported fixed-bound value of ≈1.9 falls inside this range (seed 2025
+reproduces it almost exactly), so the gap between the base-seed run and the
+paper's figure is attributable to run-to-run variance of the fixed-bound
+training across random initializations, not to a discrepancy in the scheme
+itself; the adaptive bound is comparatively insensitive to the seed, as
+expected from its construction (equation 25), which shrinks the control near
+the boundary regardless of initialization. Validation (2^12) and test (2^13)
+sample sizes for the neural network stay reduced relative to the paper's
+2^15/2^17 (see deviations); `python -m exp.exp3 --full` runs the full
 configuration.
 
 ## Experiment 4 — Black-Scholes put: convergence under grid refinement
@@ -151,14 +161,21 @@ and probability RMSE (0.042) are within 8% of the paper's values (0.113 and
 optimal feedback and probability martingale markedly better than the fixed
 bound — holds. The fixed-bound feedback RMSE (0.487) is substantially larger
 than the paper's reported 0.259, while its probability RMSE (0.108) is close
-to the paper's 0.126. Two checks were run to localize this gap: (1) varying
+to the paper's 0.126. Three checks were run to localize this gap: (1) varying
 the test-sample size (2^13, 2^15, 2^17 test paths against a single trained
 fixed-bound network) left the feedback RMSE unchanged at 0.4873 across all
 three, ruling out Monte Carlo noise in the test sample; (2) retraining with
 the paper's validation sample size (2^15 instead of the reduced 2^12) also
 left the feedback RMSE at 0.4873, ruling out validation-based checkpoint
-selection. The cause of the fixed-bound feedback gap was not identified by
-these checks.
+selection; (3) Experiment 3 showed, for the same fixed-bound architecture and
+training procedure at the same point (x,p)=(100,0.8), that the trained value
+varies substantially with the random seed (1.94 to 2.71 across three seeds,
+against the paper's ≈1.9). Since the feedback discrepancy here is computed
+from the same fixed-bound trained network, this seed-induced variance is the
+most likely source of the remaining gap between the base-seed RMSE (0.487)
+and the paper's reported 0.259; this was not re-verified by retraining
+Experiment 5 itself at multiple seeds, so the cause is identified by analogy
+with Experiment 3 rather than confirmed directly for Experiment 5.
 
 ## Experiment 6 — Lipschitz local-volatility put: fixed vs adaptive bound
 
