@@ -4,7 +4,7 @@
   "N": 100,
   "M": 1.7782794100389228,
   "eta_stab": 0.6,
-  "reference_samples": 32768,
+  "reference_samples": 1048576,
   "n_iterations": 500,
   "batch_size": 2048,
   "val_size": 4096,
@@ -44,7 +44,7 @@
     },
     {
       "p": 0.8,
-      "reference": 0.6869957267853095,
+      "reference": 0.7342844961498127,
       "fixed_estimate": 2.369702100753784,
       "fixed_stderr": 0.05516679584980011,
       "adaptive_estimate": 0.9512403607368469,
@@ -52,10 +52,10 @@
     },
     {
       "p": 1.0,
-      "reference": 7.7972888553394615,
-      "fixed_estimate": 7.7972888553394615,
+      "reference": 7.978505175842717,
+      "fixed_estimate": 7.978505175842717,
       "fixed_stderr": 0.0,
-      "adaptive_estimate": 7.7972888553394615,
+      "adaptive_estimate": 7.978505175842717,
       "adaptive_stderr": 0.0
     }
   ]

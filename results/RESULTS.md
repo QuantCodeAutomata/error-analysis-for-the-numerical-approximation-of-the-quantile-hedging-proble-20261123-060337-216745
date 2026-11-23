@@ -62,8 +62,10 @@ estimate within a few hundredths of the exact value p at both resolutions.
 
 File: `results/exp3_black_scholes_fixed_vs_adaptive.json`,
 `results/exp3_black_scholes_fixed_vs_adaptive.png`. N=100, M=h^(-1/8)=1.778,
-η_stab=0.6, reference from the closed-form formula (26) with a reduced
-sample of 2^15 standard normals (paper: 2^20; see deviations).
+η_stab=0.6, reference from the closed-form formula (26) at the paper's full
+precision of 2^20 standard normals (the reduced-size neural training below
+does not apply to this closed-form Monte Carlo evaluation, which is cheap at
+any sample size).
 
 | p | reference | fixed | adaptive | verdict |
 |---|---|---|---|---|
@@ -71,36 +73,46 @@ sample of 2^15 standard normals (paper: 2^20; see deviations).
 | 0.2 | 0.000 | 0.0001 | 0.0001 | reproduced |
 | 0.4 | 0.000 | 0.1936 | 0.0003 | partially reproduced |
 | 0.6 | 0.000 | 0.7879 | 0.0350 | partially reproduced |
-| 0.8 | 0.687 | 2.3697 | 0.9512 | partially reproduced |
-| 1.0 | 7.797 | 7.7973 | 7.7973 | reproduced |
+| 0.8 | 0.734 | 2.3697 | 0.9512 | partially reproduced |
+| 1.0 | 7.979 | 7.9785 | 7.9785 | reproduced |
 
 **Verdict: partially reproduced.** The paper's Figure 3a reports, at p=0.8,
 fixed≈1.9 and adaptive≈1.0 against a reference of ≈0.8; the executed run
-gives fixed=2.37 and adaptive=0.95, i.e. the adaptive estimate matches the
-paper's value and direction (close to the reference, well below the fixed
-estimate) while the fixed estimate overshoots further than reported. At
-p=1.0 both schemes reproduce the full super-replication price p_0≈0.655
-boundary and the terminal value 7.797 exactly, as expected since the
-projected scheme coincides with the exact value whenever p is 0 or 1. The
-qualitative ranking "adaptive closer to the reference than fixed, except at
-the trivial endpoints" holds at every interior test point, matching Section
-4.3. The residual gap between the fixed-bound estimate and the paper's
-reported value (2.37 vs. ≈1.9) and between the reference curve and the
-paper's reference (0.687 vs. ≈0.8) is a candidate effect of the reduced
-Monte Carlo sample sizes recorded below (validation 2^12, test 2^13,
-closed-form reference 2^15, against the paper's 2^15, 2^17 and 2^20). A
-full-size rerun with `python -m exp.exp3 --full` was attempted to check this,
-but at the paper's validation sample of 2^15 with validation checked every
-iteration it did not complete within the time available, so the cause is not
-confirmed further.
+gives fixed=2.37, adaptive=0.95 and reference=0.734. The reference value is
+within 10% of the paper's approximate figure-read value (8% relative gap),
+and the adaptive estimate is within 5% of the paper's value — both verdicts
+"reproduced" under the stated thresholds — while the fixed-bound estimate
+overshoots further than reported (2.37 vs. ≈1.9, a 25% relative gap,
+"partially reproduced"). At p=1.0 both schemes reproduce the full
+super-replication price p_0≈0.655 boundary and the terminal value 7.98
+closely, as expected since the projected scheme coincides with the exact
+value whenever p is 0 or 1. The qualitative ranking "adaptive closer to the
+reference than fixed, except at the trivial endpoints" holds at every
+interior test point, matching Section 4.3. Raising the closed-form reference
+from a reduced sample of 2^15 standard normals to the paper's full 2^20 moved
+the p=0.8 reference from 0.687 to 0.734, confirming that the earlier gap to
+the paper's approximate reading of ≈0.8 was partly a Monte Carlo sampling
+effect in the reference itself, not in the neural scheme; the remaining
+8% gap and the fixed-bound overshoot are consistent with the paper's figure
+being read off a plot and are not further decomposed. Validation (2^12) and
+test (2^13) sample sizes for the neural network stay reduced relative to the
+paper's 2^15/2^17 (see deviations); `python -m exp.exp3 --full` runs the full
+configuration.
 
 ## Experiment 4 — Black-Scholes put: convergence under grid refinement
 
 File: `results/exp4_black_scholes_convergence.json`,
 `results/exp4_black_scholes_convergence.png`. Fixed point (x,p)=(100,0.7),
-adaptive bound only, 3 warm-started chains, reference value 0.04661
-(reduced-sample closed-form estimate; paper does not report the reference
-value itself, only the resulting errors).
+adaptive bound only, 3 warm-started chains, reference value 0.0466
+(reduced-sample closed-form estimate at 2^14 standard normals; paper does not
+report the reference value itself, only the resulting errors). A standalone
+check of the same closed-form reference at the paper's full 2^20 samples
+gives 0.0597, a shift of about 0.015 — small relative to the reported error
+magnitudes of 0.14-0.65, so this reduced reference sample does not materially
+affect the error-vs-N pattern reported below; the convergence run itself was
+not repeated at the full reference size because the expensive part of this
+experiment is the 18 neural trainings (6 grids × 3 chains), not the
+closed-form reference.
 
 | N | mean abs. error (paper) | mean abs. error (here) | E[P_N]-p (here) |
 |---|---|---|---|

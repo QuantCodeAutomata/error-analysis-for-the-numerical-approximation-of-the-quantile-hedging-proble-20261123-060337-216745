@@ -56,7 +56,9 @@ def main() -> None:
     val_size = cfg.VAL_SIZE if args.full else cfg.QUICK_VAL_SIZE
     test_size = cfg.TEST_SIZE if args.full else cfg.QUICK_TEST_SIZE
     validation_frequency = cfg.VALIDATION_FREQUENCY if args.full else cfg.QUICK_VALIDATION_FREQUENCY
-    reference_samples = cfg.BS_REFERENCE_SAMPLES if args.full else cfg.QUICK_TEST_SIZE * 4
+    # The closed-form reference (26) is a cheap vectorised Monte Carlo evaluation,
+    # so it is always computed at the paper's full precision (see exp3.py).
+    reference_samples = cfg.BS_REFERENCE_SAMPLES
     grids = cfg.CONV_GRIDS_PAPER if args.full else cfg.CONV_GRIDS_RUN
 
     output = run(grids, cfg.CONV_N_CHAINS, batch_size, val_size, test_size,

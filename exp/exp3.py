@@ -53,7 +53,10 @@ def main() -> None:
     val_size = cfg.VAL_SIZE if args.full else cfg.QUICK_VAL_SIZE
     test_size = cfg.TEST_SIZE if args.full else cfg.QUICK_TEST_SIZE
     validation_frequency = cfg.VALIDATION_FREQUENCY if args.full else cfg.QUICK_VALIDATION_FREQUENCY
-    reference_samples = cfg.BS_REFERENCE_SAMPLES if args.full else cfg.QUICK_TEST_SIZE * 4
+    # The closed-form reference (26) is a cheap vectorised Monte Carlo evaluation
+    # (well under a second even at 2**20 samples), unlike the neural training and
+    # evaluation below, so it is always computed at the paper's full precision.
+    reference_samples = cfg.BS_REFERENCE_SAMPLES
 
     output = run(batch_size, val_size, test_size, validation_frequency, reference_samples)
     RESULTS_DIR.mkdir(exist_ok=True)
