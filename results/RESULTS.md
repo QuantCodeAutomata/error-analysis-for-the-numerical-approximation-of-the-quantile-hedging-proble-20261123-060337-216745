@@ -138,11 +138,14 @@ and probability RMSE (0.042) are within 8% of the paper's values (0.113 and
 optimal feedback and probability martingale markedly better than the fixed
 bound — holds. The fixed-bound feedback RMSE (0.487) is substantially larger
 than the paper's reported 0.259, while its probability RMSE (0.108) is close
-to the paper's 0.126. A sensitivity check that varied the test-sample size
-(2^13, 2^15, 2^17 test paths against a single trained fixed-bound network)
-left the feedback RMSE unchanged at 0.487 across all three, ruling out
-Monte Carlo noise in the test sample as the cause; the cause of the
-fixed-bound feedback gap was not identified further in the time available.
+to the paper's 0.126. Two checks were run to localize this gap: (1) varying
+the test-sample size (2^13, 2^15, 2^17 test paths against a single trained
+fixed-bound network) left the feedback RMSE unchanged at 0.4873 across all
+three, ruling out Monte Carlo noise in the test sample; (2) retraining with
+the paper's validation sample size (2^15 instead of the reduced 2^12) also
+left the feedback RMSE at 0.4873, ruling out validation-based checkpoint
+selection. The cause of the fixed-bound feedback gap was not identified by
+these checks.
 
 ## Experiment 6 — Lipschitz local-volatility put: fixed vs adaptive bound
 
@@ -246,11 +249,14 @@ N, as in experiment 4, matching the paper's reported range of -4.75e-3 to
   for reproducibility.
 - **Experiment 5 fixed-bound feedback RMSE.** The fixed-bound feedback RMSE
   (0.487) is materially larger than the paper's reported 0.259, while the
-  adaptive-bound value (0.104) matches the paper's 0.113 closely. This
-  difference was checked against the test-sample size (2^13, 2^15 and 2^17
-  test paths all gave 0.487 on one trained network), which ruled out Monte
-  Carlo noise but did not resolve it, so its cause is not identified; the
-  ranking "adaptive closer to the exact feedback than fixed" is unaffected.
+  adaptive-bound value (0.104) matches the paper's 0.113 closely. Two checks
+  were run: varying the test-sample size (2^13, 2^15 and 2^17 test paths all
+  gave 0.4873 on one trained network) ruled out Monte Carlo noise in the test
+  sample, and retraining with the paper's validation sample size (2^15
+  instead of the reduced 2^12) also gave 0.4873, ruling out validation-based
+  checkpoint selection. Neither check resolved the gap, so its cause is not
+  identified; the ranking "adaptive closer to the exact feedback than fixed"
+  stated in Section 4.3 is unaffected.
 
 ## Not reproduced
 
