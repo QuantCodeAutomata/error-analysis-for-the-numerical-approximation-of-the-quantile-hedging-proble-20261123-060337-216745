@@ -183,17 +183,19 @@ gives fixed=1.71 and adaptive=0.49 (matching the paper's adaptive value
 almost exactly) while the reduced-sample reference (0.33) is lower than the
 paper's reported 0.8. The ranking adaptive < fixed, with the adaptive value
 far closer to the reference, holds throughout, matching Section 4.3's
-description of this more challenging nonsmooth setting. The reference
-curve's gap to the paper's reported value at p=0.8 is a candidate effect of
-the reduced Monte Carlo path count (2^15 vs. the paper's 2^18): with only
-2^15 paths the empirical quantile q_p used in formula (26) is estimated with
-more sampling noise for a payoff with a point mass at zero (p_0 is below
-0.8); `max_reference_grid_difference` (the 500- vs. 500-step check performed
-at this reduced setting) recorded 0.0 because both curves were computed on
-the same coarser grid and do not exercise the convergence check the paper
-performs at 2^18 paths and 500 vs. 1000 steps. The cause of the reference
-gap was not confirmed further; `python -m exp.exp6 --full` performs that
-check at the paper's settings.
+description of this more challenging nonsmooth setting. A standalone check
+raised the Monte Carlo path count from the reduced 2^15 to the paper's full
+2^18 (1000 Euler steps, independent of the neural-network sample sizes): the
+reference at p=0.8 moved from 0.326 to 0.309, i.e. in the opposite direction
+from the paper's value and by only 0.017, ruling out Monte Carlo sampling
+noise as the cause of the gap to the paper's reported ≈0.8. The same
+full-size simulation gives a terminal super-replication value at p=1.0 of
+6.72, within 1% of the paper's reported ≈6.8 and of the reduced-sample value
+(6.725) reported above, indicating the Euler scheme, the Girsanov kernel
+λ(x)=-μ/ℓ(x), and the quantile-hedging formula (26) are computed correctly
+at both ends of the p range. The cause of the remaining gap specifically at
+intermediate p (0.4-0.8) was not identified by this check; `python -m
+exp.exp6 --full` reruns the full configuration.
 
 ## Experiment 7 — Lipschitz local-volatility put: convergence under grid refinement
 
