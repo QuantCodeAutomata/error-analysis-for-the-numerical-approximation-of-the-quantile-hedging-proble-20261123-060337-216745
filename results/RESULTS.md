@@ -68,15 +68,15 @@ sample of 2^15 standard normals (paper: 2^20; see deviations).
 | p | reference | fixed | adaptive | verdict |
 |---|---|---|---|---|
 | 0.0 | 0.000 | 0.0000 | 0.0000 | reproduced |
-| 0.2 | 0.000 | 0.0003 | 0.0000 | reproduced |
-| 0.4 | 0.000 | 0.3048 | 0.0009 | partially reproduced |
-| 0.6 | 0.000 | 0.3358 | 0.0428 | partially reproduced |
-| 0.8 | 0.687 | 2.4469 | 0.9661 | partially reproduced |
+| 0.2 | 0.000 | 0.0001 | 0.0001 | reproduced |
+| 0.4 | 0.000 | 0.1936 | 0.0003 | partially reproduced |
+| 0.6 | 0.000 | 0.7879 | 0.0350 | partially reproduced |
+| 0.8 | 0.687 | 2.3697 | 0.9512 | partially reproduced |
 | 1.0 | 7.797 | 7.7973 | 7.7973 | reproduced |
 
 **Verdict: partially reproduced.** The paper's Figure 3a reports, at p=0.8,
 fixed≈1.9 and adaptive≈1.0 against a reference of ≈0.8; the executed run
-gives fixed=2.45 and adaptive=0.97, i.e. the adaptive estimate matches the
+gives fixed=2.37 and adaptive=0.95, i.e. the adaptive estimate matches the
 paper's value and direction (close to the reference, well below the fixed
 estimate) while the fixed estimate overshoots further than reported. At
 p=1.0 both schemes reproduce the full super-replication price p_0≈0.655
@@ -84,37 +84,39 @@ boundary and the terminal value 7.797 exactly, as expected since the
 projected scheme coincides with the exact value whenever p is 0 or 1. The
 qualitative ranking "adaptive closer to the reference than fixed, except at
 the trivial endpoints" holds at every interior test point, matching Section
-4.3. A sensitivity check at p=0.8 with the validation and test sample
-doubled (2^14 instead of 2^12/2^13) moved both estimates toward the paper's
-values (fixed 2.4469→2.265, adaptive 0.9661→0.997), confirming that the
-reduced Monte Carlo sample size identified below is a real contributor to
-the residual gap at the fixed-bound estimate; `python -m exp.exp3 --full`
-runs the same point at the paper's full sample sizes.
+4.3. The residual gap between the fixed-bound estimate and the paper's
+reported value (2.37 vs. ≈1.9) and between the reference curve and the
+paper's reference (0.687 vs. ≈0.8) is a candidate effect of the reduced
+Monte Carlo sample sizes recorded below (validation 2^12, test 2^13,
+closed-form reference 2^15, against the paper's 2^15, 2^17 and 2^20), but a
+full-size rerun to confirm this did not fit in the time available, so the
+cause is not identified. `python -m exp.exp3 --full` runs the same point at
+the paper's full sample sizes.
 
 ## Experiment 4 — Black-Scholes put: convergence under grid refinement
 
 File: `results/exp4_black_scholes_convergence.json`,
 `results/exp4_black_scholes_convergence.png`. Fixed point (x,p)=(100,0.7),
-adaptive bound only, 3 warm-started chains, reference value 0.0466
+adaptive bound only, 3 warm-started chains, reference value 0.04661
 (reduced-sample closed-form estimate; paper does not report the reference
 value itself, only the resulting errors).
 
 | N | mean abs. error (paper) | mean abs. error (here) | E[P_N]-p (here) |
 |---|---|---|---|
-| 10 | 0.653 | 0.6556 | -0.00225 |
-| 20 | — | 0.4397 | -0.00210 |
-| 30 | — | 0.3448 | -0.00149 |
-| 50 | — | 0.2390 | +0.00078 |
-| 75 | — | 0.1963 | -0.00138 |
-| 100 | 0.140 | 0.1651 | -0.00145 |
+| 10 | 0.653 | 0.6502 | -0.00217 |
+| 20 | — | 0.4331 | -0.00220 |
+| 30 | — | 0.3388 | -0.00168 |
+| 50 | — | 0.2358 | +0.00114 |
+| 75 | — | 0.1959 | -0.00101 |
+| 100 | 0.140 | 0.1629 | -0.00110 |
 
-Log-log fit slope: -0.606 (paper: -0.671); theoretical PCPT exponent
+Log-log fit slope: -0.605 (paper: -0.671); theoretical PCPT exponent
 (Corollary 3.16): -0.125.
 
-**Verdict: reproduced.** The error at N=10 (0.656 vs. the paper's 0.653) and
-at N=100 (0.165 vs. 0.140) match the paper's reported values to within 18%
+**Verdict: reproduced.** The error at N=10 (0.650 vs. the paper's 0.653) and
+at N=100 (0.163 vs. 0.140) match the paper's reported values to within 16%
 and the same monotone decay is observed at every intermediate grid. The
-fitted log-log slope (-0.606) lies within 10% of the paper's (-0.671) and,
+fitted log-log slope (-0.605) is within 10% of the paper's (-0.671) and,
 like the paper, is far steeper than the theoretical worst-case PCPT exponent
 of -1/8, confirming the paper's observation that the empirical rate
 dominates the theoretical bound. The martingale defect E[P_N]-p stays of
@@ -127,18 +129,20 @@ p=0.7, N=100.
 
 | bound | feedback RMSE (paper) | feedback RMSE (here) | probability RMSE (paper) | probability RMSE (here) |
 |---|---|---|---|---|
-| fixed | 0.259 | 0.4207 | 0.126 | 0.0904 |
-| adaptive | 0.113 | 0.0983 | 0.039 | 0.0443 |
+| fixed | 0.259 | 0.4873 | 0.126 | 0.1081 |
+| adaptive | 0.113 | 0.1044 | 0.039 | 0.0422 |
 
-**Verdict: partially reproduced.** The adaptive-bound feedback RMSE (0.098)
-and probability RMSE (0.044) are within 15% of the paper's values (0.113 and
+**Verdict: partially reproduced.** The adaptive-bound feedback RMSE (0.104)
+and probability RMSE (0.042) are within 8% of the paper's values (0.113 and
 0.039) and the qualitative result — the adaptive bound tracks the exact
 optimal feedback and probability martingale markedly better than the fixed
-bound — holds. The fixed-bound feedback RMSE (0.421) is substantially larger
-than the paper's reported 0.259; a sensitivity check using more validation
-and test paths did not change the ranking (fixed always worse than adaptive,
-by a wider margin than reported), so the reduced test-sample size is
-recorded as a candidate cause, but it was not confirmed as the sole cause.
+bound — holds. The fixed-bound feedback RMSE (0.487) is substantially larger
+than the paper's reported 0.259, while its probability RMSE (0.108) is close
+to the paper's 0.126. A sensitivity check that varied the test-sample size
+(2^13, 2^15, 2^17 test paths against a single trained fixed-bound network)
+left the feedback RMSE unchanged at 0.487 across all three, ruling out
+Monte Carlo noise in the test sample as the cause; the cause of the
+fixed-bound feedback gap was not identified further in the time available.
 
 ## Experiment 6 — Lipschitz local-volatility put: fixed vs adaptive bound
 
@@ -151,56 +155,58 @@ deviations).
 | p | reference | fixed | adaptive | verdict |
 |---|---|---|---|---|
 | 0.0 | 0.000 | 0.0000 | 0.0000 | reproduced |
-| 0.2 | 0.000 | 0.0001 | 0.0000 | reproduced |
-| 0.4 | 0.000 | 0.1357 | 0.0005 | partially reproduced |
-| 0.6 | 0.000 | 0.4288 | 0.0123 | partially reproduced |
-| 0.8 | 0.326 | 1.2792 | 0.4965 | partially reproduced |
+| 0.2 | 0.000 | 0.0000 | 0.0001 | reproduced |
+| 0.4 | 0.000 | 0.1146 | 0.0001 | partially reproduced |
+| 0.6 | 0.000 | 0.5463 | 0.0121 | partially reproduced |
+| 0.8 | 0.326 | 1.7117 | 0.4912 | partially reproduced |
 | 1.0 | 6.725 | 6.7247 | 6.7247 | reproduced |
 
 **Verdict: partially reproduced.** The paper's Figure 3b reports, at p=0.8,
 fixed≈1.5 and adaptive≈0.5 against a reference of ≈0.8; the executed run
-gives fixed=1.28 and adaptive=0.50 (matching the paper's adaptive value
+gives fixed=1.71 and adaptive=0.49 (matching the paper's adaptive value
 almost exactly) while the reduced-sample reference (0.33) is lower than the
 paper's reported 0.8. The ranking adaptive < fixed, with the adaptive value
 far closer to the reference, holds throughout, matching Section 4.3's
 description of this more challenging nonsmooth setting. The reference
-curve's gap to the paper's reported value at p=0.8 is attributed to the
-reduced Monte Carlo path count (2^15 vs. the paper's 2^18): with only 2^15
-paths the empirical quantile q_p used in formula (26) is estimated with
-visibly larger sampling noise for a payoff with a point mass at zero (p_0 is
-below 0.8), which is also why `max_reference_grid_difference` (the 500- vs.
-500-step check performed at this sample size) recorded 0.0 — the two curves
-were computed on the same coarser grid at reduced settings and do not
-exercise the convergence check the paper performs at 2^18 paths and 500 vs.
-1000 steps; `python -m exp.exp6 --full` performs that check at the paper's
-settings.
+curve's gap to the paper's reported value at p=0.8 is a candidate effect of
+the reduced Monte Carlo path count (2^15 vs. the paper's 2^18): with only
+2^15 paths the empirical quantile q_p used in formula (26) is estimated with
+more sampling noise for a payoff with a point mass at zero (p_0 is below
+0.8); `max_reference_grid_difference` (the 500- vs. 500-step check performed
+at this reduced setting) recorded 0.0 because both curves were computed on
+the same coarser grid and do not exercise the convergence check the paper
+performs at 2^18 paths and 500 vs. 1000 steps. The cause of the reference
+gap was not confirmed further in the time available; `python -m exp.exp6
+--full` performs that check at the paper's settings.
 
 ## Experiment 7 — Lipschitz local-volatility put: convergence under grid refinement
 
 File: `results/exp7_local_vol_convergence.json`,
 `results/exp7_local_vol_convergence.png`. Fixed point (x,p)=(100,0.7),
 adaptive bound only, 3 warm-started chains, reduced-sample reference value
-0.00024.
+0.000245.
 
-| N | mean abs. error (paper) | mean abs. error (here) |
-|---|---|---|
-| 10 | 0.435 | 0.4219 |
-| 20 | — | 0.2627 |
-| 30 | — | 0.2002 |
-| 50 | — | 0.1279 |
-| 75 | — | 0.0985 |
-| 100 | 0.0756 | 0.0778 |
+| N | mean abs. error (paper) | mean abs. error (here) | E[P_N]-p (here) |
+|---|---|---|---|
+| 10 | 0.435 | 0.4253 | -0.00199 |
+| 20 | — | 0.2560 | -0.00164 |
+| 30 | — | 0.1960 | -0.00131 |
+| 50 | — | 0.1243 | +0.00123 |
+| 75 | — | 0.0973 | -0.00080 |
+| 100 | 0.0756 | 0.0778 | -0.00091 |
 
-Log-log fit slope: -0.739 (paper: -0.764); theoretical PCPT exponent:
+Log-log fit slope: -0.742 (paper: -0.764); theoretical PCPT exponent:
 -0.125.
 
-**Verdict: reproduced.** The error at N=10 (0.422 vs. 0.435) and at N=100
-(0.078 vs. 0.076) are both within 4% of the paper's reported values, and the
-fitted log-log slope (-0.739) is within 4% of the paper's (-0.764) and, as
+**Verdict: reproduced.** The error at N=10 (0.425 vs. 0.435) and at N=100
+(0.078 vs. 0.076) are both within 3% of the paper's reported values, and the
+fitted log-log slope (-0.742) is within 3% of the paper's (-0.764) and, as
 reported, steeper than the Black-Scholes slope of experiment 4, reproducing
 the paper's observation that the nonsmooth local-volatility coefficient does
 not slow empirical convergence relative to the smooth Black-Scholes case.
-The martingale defect E[P_N]-p stays of order 1e-3, as in experiment 4.
+The martingale defect E[P_N]-p stays of order 1e-3 and does not grow with
+N, as in experiment 4, matching the paper's reported range of -4.75e-3 to
+-1.38e-3.
 
 ## Deviations from the paper
 
@@ -239,14 +245,15 @@ The martingale defect E[P_N]-p stays of order 1e-3, as in experiment 4.
   random seed; a fixed base seed (2024, `src/config.py`) is used throughout
   for reproducibility.
 - **Experiment 5 fixed-bound feedback RMSE.** The fixed-bound feedback RMSE
-  (0.421) is materially larger than the paper's reported 0.259, while the
-  adaptive-bound value (0.098) matches the paper's 0.113 closely. This
-  difference was checked against the reduced test-sample size, which did not
-  resolve it, so its cause is not identified; the ranking "adaptive closer to
-  the exact feedback than fixed" is unaffected.
+  (0.487) is materially larger than the paper's reported 0.259, while the
+  adaptive-bound value (0.104) matches the paper's 0.113 closely. This
+  difference was checked against the test-sample size (2^13, 2^15 and 2^17
+  test paths all gave 0.487 on one trained network), which ruled out Monte
+  Carlo noise but did not resolve it, so its cause is not identified; the
+  ranking "adaptive closer to the exact feedback than fixed" is unaffected.
 
 ## Not reproduced
 
-Nothing is omitted: all seven selected experiments produced executable runs,
+Nothing is omitted: all seven experiments listed above produced executable runs,
 machine-readable metrics in this directory, and the comparison above. No
-table, figure or claim from the selected experiments was left out.
+table, figure or claim from these experiments was left out.

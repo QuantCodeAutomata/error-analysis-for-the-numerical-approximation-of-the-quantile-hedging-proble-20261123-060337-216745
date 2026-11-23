@@ -69,7 +69,7 @@ FIN_N_ITERATIONS = 500    # training iterations (Figure 3 caption)
 
 BS_REFERENCE_SAMPLES = 2 ** 20      # closed-form reference sample size (Section 4.3)
 LV_REFERENCE_PATHS = 2 ** 18        # Monte-Carlo reference path count (Section 4.3)
-LV_REFERENCE_PATHS_RUN = 2 ** 15    # reduced path count actually executed (time budget)
+LV_REFERENCE_PATHS_RUN = 2 ** 15    # reduced path count executed to fit the replication's time limit
 LV_REFERENCE_STEPS = 1000           # Euler steps for the MC reference (Section 4.3)
 LV_REFERENCE_STEPS_CHECK = 500      # coarser grid used for the convergence check (Section 4.3)
 
@@ -107,7 +107,7 @@ N_SAMPLE_TRAJECTORIES = 6   # number of test paths plotted (not specified exactl
 QUICK_BATCH_SIZE = BATCH_SIZE    # batch size L_batch is kept at the paper's value
 QUICK_VAL_SIZE = 2 ** 12
 QUICK_TEST_SIZE = 2 ** 13
-QUICK_N_ITERATIONS_SCALE = 1.0   # iteration counts (the method's convergence budget) are kept
+QUICK_N_ITERATIONS_SCALE = 1.0   # Adam training-iteration counts are kept at the paper's values
 # Validating every iteration on the full paper validation sample is the
 # dominant cost; validating every 25 iterations keeps the validation-based
 # model selection of Algorithm 1 (step 8) while fitting the available
