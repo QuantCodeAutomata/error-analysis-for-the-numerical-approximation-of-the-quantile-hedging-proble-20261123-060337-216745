@@ -1,0 +1,13 @@
+{
+  "experiment": "exp_5",
+  "p": 0.7,
+  "N": 100,
+  "n_iterations": 500,
+  "batch_size": 2048,
+  "val_size": 4096,
+  "test_size": 8192,
+  "fixed_feedback_rmse": 0.42071635004787505,
+  "fixed_probability_rmse": 0.09042587301435201,
+  "adaptive_feedback_rmse": 0.09833197535684747,
+  "adaptive_probability_rmse": 0.044310986436494115
+}

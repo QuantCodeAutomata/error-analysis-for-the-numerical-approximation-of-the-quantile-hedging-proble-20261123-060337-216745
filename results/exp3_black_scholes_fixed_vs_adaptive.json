@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_3",
+  "model": "black_scholes",
+  "N": 100,
+  "M": 1.7782794100389228,
+  "eta_stab": 0.6,
+  "reference_samples": 32768,
+  "n_iterations": 500,
+  "batch_size": 2048,
+  "val_size": 4096,
+  "test_size": 8192,
+  "rows": [
+    {
+      "p": 0.0,
+      "reference": 0.0,
+      "fixed_estimate": 0.0,
+      "fixed_stderr": 0.0,
+      "adaptive_estimate": 0.0,
+      "adaptive_stderr": 0.0
+    },
+    {
+      "p": 0.2,
+      "reference": 0.0,
+      "fixed_estimate": 0.00032864336390048265,
+      "fixed_stderr": 0.00023910048184916377,
+      "adaptive_estimate": 3.1354938982985914e-05,
+      "adaptive_stderr": 3.902381649822928e-06
+    },
+    {
+      "p": 0.4,
+      "reference": 0.0,
+      "fixed_estimate": 0.30479997396469116,
+      "fixed_stderr": 0.031509239226579666,
+      "adaptive_estimate": 0.0009240759536623955,
+      "adaptive_stderr": 0.00016138897626660764
+    },
+    {
+      "p": 0.6,
+      "reference": 0.0,
+      "fixed_estimate": 0.33582931756973267,
+      "fixed_stderr": 0.015129925683140755,
+      "adaptive_estimate": 0.042826127260923386,
+      "adaptive_stderr": 0.002345251152291894
+    },
+    {
+      "p": 0.8,
+      "reference": 0.6869957267853095,
+      "fixed_estimate": 2.446943521499634,
+      "fixed_stderr": 0.051983702927827835,
+      "adaptive_estimate": 0.9661082029342651,
+      "adaptive_stderr": 0.02705162763595581
+    },
+    {
+      "p": 1.0,
+      "reference": 7.7972888553394615,
+      "fixed_estimate": 7.7972888553394615,
+      "fixed_stderr": 0.0,
+      "adaptive_estimate": 7.7972888553394615,
+      "adaptive_stderr": 0.0
+    }
+  ]
+}

@@ -78,8 +78,13 @@ def run_fixed_vs_adaptive(
     fixed_est, fixed_se, adapt_est, adapt_se = [], [], [], []
     for i, p in enumerate(p_grid):
         if p in (0.0, 1.0):
-            fixed_est.append(p); fixed_se.append(0.0)
-            adapt_est.append(p); adapt_se.append(0.0)
+            # At p=0 the quantile hedging value is 0 and at p=1 it is the full
+            # super-replication price E[Z_T g(X_T)]: both are trivial cases of
+            # (26) that coincide with the already-computed reference, not with
+            # the literal probability p (that identity only holds in the toy
+            # model of Section 4.2, where v(p)=p).
+            fixed_est.append(reference[i]); fixed_se.append(0.0)
+            adapt_est.append(reference[i]); adapt_se.append(0.0)
             continue
         res_fixed = train_single(
             spec, p, N, M, "fixed", None, n_iterations, batch_size, val_size,
