@@ -210,9 +210,18 @@ full-size simulation gives a terminal super-replication value at p=1.0 of
 6.72, within 1% of the paper's reported ≈6.8 and of the reduced-sample value
 (6.725) reported above, indicating the Euler scheme, the Girsanov kernel
 λ(x)=-μ/ℓ(x), and the quantile-hedging formula (26) are computed correctly
-at both ends of the p range. The cause of the remaining gap specifically at
-intermediate p (0.4-0.8) was not identified by this check; `python -m
-exp.exp6 --full` reruns the full configuration.
+at both ends of the p range. A second check retrained the fixed-bound
+network at p=0.8 with the base seed changed from 2024 to 2025 (all other
+settings unchanged, as for experiment 3): the fixed-bound estimate moved
+from 1.71 (seed 2024) to 1.36 (seed 2025), straddling the paper's reported
+≈1.5 from opposite sides, while the adaptive-bound estimate stayed close to
+its base-seed value (0.51 vs 0.49) and to the paper's ≈0.5. This reproduces,
+in the local-volatility model, the same run-to-run sensitivity of the
+fixed-bound training already identified in experiment 3, and is the most
+likely source of the remaining gap at intermediate p for the fixed bound;
+the adaptive bound's relative seed-insensitivity again matches its
+construction (equation 25). `python -m exp.exp6 --full` reruns the full
+configuration.
 
 ## Experiment 7 — Lipschitz local-volatility put: convergence under grid refinement
 
