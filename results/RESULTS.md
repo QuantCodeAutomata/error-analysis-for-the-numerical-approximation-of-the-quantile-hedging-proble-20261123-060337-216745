@@ -290,14 +290,21 @@ N, as in experiment 4, matching the paper's reported range of -4.75e-3 to
   for reproducibility.
 - **Experiment 5 fixed-bound feedback RMSE.** The fixed-bound feedback RMSE
   (0.487) is materially larger than the paper's reported 0.259, while the
-  adaptive-bound value (0.104) matches the paper's 0.113 closely. Two checks
-  were run: varying the test-sample size (2^13, 2^15 and 2^17 test paths all
-  gave 0.4873 on one trained network) ruled out Monte Carlo noise in the test
-  sample, and retraining with the paper's validation sample size (2^15
-  instead of the reduced 2^12) also gave 0.4873, ruling out validation-based
-  checkpoint selection. Neither check resolved the gap, so its cause is not
-  identified; the ranking "adaptive closer to the exact feedback than fixed"
-  stated in Section 4.3 is unaffected.
+  adaptive-bound value (0.104) matches the paper's 0.113 closely. Three
+  checks were run: varying the test-sample size (2^13, 2^15 and 2^17 test
+  paths all gave 0.4873 on one trained network) ruled out Monte Carlo noise
+  in the test sample, retraining with the paper's validation sample size
+  (2^15 instead of the reduced 2^12) also gave 0.4873, ruling out
+  validation-based checkpoint selection, and retraining with the base seed
+  changed from 2024 to 2025 gave 0.4548 instead of 0.4873 (adaptive bound:
+  0.1098, essentially unchanged from 0.104). The seed change moves the
+  fixed-bound estimate part-way toward the paper's 0.259 without fully
+  closing the gap. This points to the same mechanism identified for
+  experiments 3 and 6 below — run-to-run variance of the fixed-bound
+  network's training, which experiment 2 shows is the bound construction
+  most exposed to projection bias near p=1/2 — as a contributing but not
+  fully identified cause; the ranking "adaptive closer to the exact feedback
+  than fixed" stated in Section 4.3 is unaffected.
 
 ## Not reproduced
 
