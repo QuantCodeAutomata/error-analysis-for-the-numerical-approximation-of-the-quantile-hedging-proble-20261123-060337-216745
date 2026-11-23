@@ -88,10 +88,11 @@ the trivial endpoints" holds at every interior test point, matching Section
 reported value (2.37 vs. ≈1.9) and between the reference curve and the
 paper's reference (0.687 vs. ≈0.8) is a candidate effect of the reduced
 Monte Carlo sample sizes recorded below (validation 2^12, test 2^13,
-closed-form reference 2^15, against the paper's 2^15, 2^17 and 2^20), but a
-full-size rerun to confirm this did not fit in the time available, so the
-cause is not identified. `python -m exp.exp3 --full` runs the same point at
-the paper's full sample sizes.
+closed-form reference 2^15, against the paper's 2^15, 2^17 and 2^20). A
+full-size rerun with `python -m exp.exp3 --full` was attempted to check this,
+but at the paper's validation sample of 2^15 with validation checked every
+iteration it did not complete within the time available, so the cause is not
+confirmed further.
 
 ## Experiment 4 — Black-Scholes put: convergence under grid refinement
 
@@ -179,8 +180,8 @@ more sampling noise for a payoff with a point mass at zero (p_0 is below
 at this reduced setting) recorded 0.0 because both curves were computed on
 the same coarser grid and do not exercise the convergence check the paper
 performs at 2^18 paths and 500 vs. 1000 steps. The cause of the reference
-gap was not confirmed further in the time available; `python -m exp.exp6
---full` performs that check at the paper's settings.
+gap was not confirmed further; `python -m exp.exp6 --full` performs that
+check at the paper's settings.
 
 ## Experiment 7 — Lipschitz local-volatility put: convergence under grid refinement
 
@@ -225,8 +226,8 @@ N, as in experiment 4, matching the paper's reported range of -4.75e-3 to
   network for 500 Adam iterations at these sizes, repeated for six grid
   points × three warm-started chains × two models in experiments 4 and 7
   alone, was estimated from a single reduced run (≈9 minutes at the reduced
-  settings below) to take several hours at the paper's full sizes — more
-  than the computation time available for all seven experiments together.
+  settings below) to take several hours at the paper's full sizes, which
+  exceeded the replication's time limit for all seven experiments together.
   The executed configuration instead uses a validation sample of 2^12, a test
   sample of 2^13, a closed-form reference sample of 2^15 (Black-Scholes), and
   a Monte Carlo reference of 2^15 paths × 500 Euler steps (local-volatility),
