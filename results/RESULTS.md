@@ -84,7 +84,12 @@ boundary and the terminal value 7.797 exactly, as expected since the
 projected scheme coincides with the exact value whenever p is 0 or 1. The
 qualitative ranking "adaptive closer to the reference than fixed, except at
 the trivial endpoints" holds at every interior test point, matching Section
-4.3.
+4.3. A sensitivity check at p=0.8 with the validation and test sample
+doubled (2^14 instead of 2^12/2^13) moved both estimates toward the paper's
+values (fixed 2.4469→2.265, adaptive 0.9661→0.997), confirming that the
+reduced Monte Carlo sample size identified below is a real contributor to
+the residual gap at the fixed-bound estimate; `python -m exp.exp3 --full`
+runs the same point at the paper's full sample sizes.
 
 ## Experiment 4 — Black-Scholes put: convergence under grid refinement
 
